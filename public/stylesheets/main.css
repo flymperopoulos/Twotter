@@ -24,6 +24,15 @@
 	color: #ff4c4c;
 }
 
+#authorName{
+	text-align: center;
+	cursor: pointer;
+}
+
+.authors {
+	text-align: center;
+}
+
 #message {
 	font-weight: bold;
 	color:#ff9999;

@@ -59,6 +59,8 @@ var onSuccessTwotte = function (data, status){
 
 	$listOfTwottes.prepend(updatingStuff);
 
+	$('.authorsList').prepend('<center>' + data.author + '</center>');
+
 	// var twoot_form = Handlebars.templates['newtwotte'];
 	// $('#listOfTwottes').prepend(twoot_form(data));
 	console.log(data);
@@ -94,7 +96,7 @@ function postTwotteHandler(event) {
 	console.log('Submitting twotte...');
 	event.preventDefault();
 
-	var name = $logInForm.find("#nameField").val();
+	var name = $("#login").find("#nameField").val();
 	var message = $("#addTwotte").find("#messageInput").val();
 	var urlRequest = $("#addTwotte").attr('action');
 	
