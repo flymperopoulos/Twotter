@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 
 // Creates new Schema out of mongoose
 var twotteSchema = mongoose.Schema({
-	timestamp : Number,
+	timestamp : String,
 	oauthId : String,
 	author: String,
 	message: String

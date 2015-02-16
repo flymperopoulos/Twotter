@@ -1,6 +1,15 @@
-<nav class="navbar navbar-default">
-	<form action='/login' id='login' class='navbar-form navbar-right'>
-			<input type='text' name='username' placeholder='Enter Username' class='form-control' required='true'>
-			<button type='submit' class='btn btn-submit btn-raised form-control'>Log In</button>
-	</form>
-</nav>
+{{#if loggedIn}}
+	<nav class="navbar navbar-default">
+		<form action='/logout' id='logout' class='navbar-form navbar-right'>
+				<center>You're awesome, {{name}}</center>
+				<button type='submit' class='btn btn-submit btn-raised form-control'>Log Out</button>
+		</form>
+	</nav>
+{{else}}
+	<nav class="navbar navbar-default">
+		<form action='/login' id='login' class='navbar-form navbar-right'>
+				<input type='text' id="nameField" name='username' placeholder='Enter Username' class='form-control' required='true'>
+				<button type='submit' class='btn btn-submit btn-raised form-control'>Log In</button>
+		</form>
+	</nav>
+{{/if}}

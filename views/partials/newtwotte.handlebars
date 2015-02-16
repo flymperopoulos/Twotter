@@ -1,0 +1,12 @@
+<div id="listOfTwottes">
+
+{{#each twottes}}
+
+	<div class="{{this.author}}" id="{{this._id}}">
+		<span id="author"> {{this.author}} </span> @ <span id="time">{{this.timestamp}}</span>
+		Message: <span id="message">{{this.message}}</span>
+	</div>
+
+{{/each}}
+
+</div>

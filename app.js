@@ -3,6 +3,7 @@ var session = require('express-session');
 var path = require('path');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
 var exphbs  = require('express-handlebars');
 var mongoose = require('mongoose');
 
@@ -29,9 +30,13 @@ app.use(session({
         saveUninitialized: true
 }));
 
+// GET requests
 app.get('/', index.home);
 
-// app.post('/login', index.login);
+// POST requests 
+app.post('/login', index.login);
+app.post('/addTwotte', index.postTwotte);
+app.post('/logout', index.logout);
 
 var PORT = process.env.PORT || 3000;
 
