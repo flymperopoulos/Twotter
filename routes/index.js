@@ -9,19 +9,18 @@ function errorHandler(err, req, res, next) {
   res.render('error', { error: err });
 }
 
-// Initializes routes new object
-var routes = {};
-
-// Keeps track of time for timestamps on twottes
 var getTimeStamp = function (){
 	var timeCurrent = new Date();
-	var timeStap = timeCurrent.getDate() + '/' + timeCurrent.getMonth() + '/' + timeCurrent.getFullYear() + '@' + timeCurrent.getHours() + ":" + timeCurrent.getMinutes() + ":" + timeCurrent.getSeconds();
+	var timeStap =  timeCurrent.getHours() + ":" + timeCurrent.getMinutes() + ":" + timeCurrent.getSeconds();
 	return timeStap;
 }
 
+// Initializes routes new object
+var routes = {};
+
 // Home method renders home.handlebars
 routes.home = function(req, res) {
-	console.log('check1');
+	console.log('entered routes.home')
 	Person.find({}, function (err, peopleNew){
 		if (err) {
 			errorHandler(err, req, res);
@@ -31,25 +30,12 @@ routes.home = function(req, res) {
 					errorHandler(err, req, res);
 				} 
 
-				var loggedIn;
-
-				if (req.session._id){
-					loggedIn = true
-				} else {
-					loggedIn = false
-				}
-				console.log('Am I logged in?');
-				console.log(loggedIn);
-
 				var CompletePageData = {
-					name: req.session.name,
-					message: req.session.message,
 					people : peopleNew,
-					twottes : twottesNew,
-					loggedIn: loggedIn
+					twottes : twottesNew
 				}
 
-				console.log('check3');
+				console.log('prints CompletePageData: ', CompletePageData);
 
 				res.render('home', CompletePageData);
 			})
@@ -57,88 +43,65 @@ routes.home = function(req, res) {
 	})
 }
 
-routes.login = function(req, res){
-	console.log(req.body.name);
+routes.account = function(req, res){
+	console.log('got in routes.account');
 
-	var newPerson = new Person({'name':req.body.name});
+	Person.findById(req.session.passport.user, function(err, user) {
+ 		if(err) {
+  			res.status(500).send({'error':err});
+  			console.log(err);
+ 		} else {
 
-	Person.find({name:newPerson.name},null, {sort:{timestamp:-1}}, function (err,data){
-		if (data.length === 0) {
-			// save to the database
-			newPerson.save(function (err, user){
-				if (err) {
-					errorHandler(err, req, res)
-				} else {
-					console.log('No errors and new person created.');
-				  	Person.findOne(newPerson, function (err,data){
-		  			  	if (err){
-		  			  		console.log('An error occured here.');
-		  			  	}
-		  			  	else {
-		  			  		console.log('Checking ids');
-		  			  		console.log(user._id);
+ 			Twotte.find({}, null, {sort:{timestamp:-1}}, function (err, twottesNew){
+ 				if (err) {
+ 					errorHandler(err, req, res);
+ 				} 
 
-		  			  		req.session._id = user._id;
+ 				var CompletePageData = {
+ 					people : user,
+ 					twottes : twottesNew,
+ 					name:user.name
+ 				}
 
-		  			  		req.session.name = user.name;
+ 				console.log(CompletePageData);
 
-		  			  		var ResSessObj = {
-		  			  			'_id' : req.session._id,
-		  			  			'name' : req.session.name,
-		  			  			loggedIn: true
-		  			  		}
-
-		  			  		console.log(ResSessObj);
-		  			  		res.json(ResSessObj);
-		  			  	} 
-					})
-				}
-			});
-		} else {
-
-			req.session._id	= data[0]._id;
-			req.session.name = data[0].name;
-
-			var ResSessObj = {
-				'_id' : req.session._id,
-				'name' : req.session.name,
-				loggedIn: true
-			}
-
-			console.log('resulting person obj',ResSessObj);
-
-			res.json(ResSessObj);
-		}
-	})
+   			res.render('account', CompletePageData);
+   			})
+ 		}
+	});
 }
-
-routes.logout = function (req, res){
-
-	req.session._id = "";
-	req.session.name = "";
-	res.status(200).end();
-}
-
 
 routes.postTwotte = function (req, res){
+	Person.findById(req.session.passport.user, function(err, user) {
+ 		if(err) {
+  			console.log(err);
+ 		} else {
 
-	var author = req.session.name;
-	var message = req.body.message;
-	var displayTime = getTimeStamp();
+ 			var passportObj = req.session.passport;
+			var passportAuthor = user.name;
+			var message = req.body.message;
+			var displayTime = getTimeStamp();
 
-	var newTwotte = new Twotte({
-		author:author, 
-		message:message,
-		timestamp: displayTime
+			var newTwotte = new Twotte({
+				author:passportAuthor, 
+				message:message,
+				timestamp: displayTime
+			});
+
+			// console.log('new twotte',newTwotte);
+			newTwotte.save(function (err, twotte){
+				if (err) {
+					res.status(500).send({'error':err});
+					console.log(err);
+					errorHandler(err, req, res);
+				} else {
+					res.json(twotte);
+				}
+			})
+
+   			res.render('account', newTwotte);
+ 		}
 	});
-
-	newTwotte.save(function (err, twotte){
-		if (err) {
-			errorHandler(err, req, res)
-		} else {
-			res.json(twotte);
-		}
-	})
 }
 
 routes.deleteTwotte = function (req, res) {
@@ -151,19 +114,20 @@ routes.deleteTwotte = function (req, res) {
 			console.log("error with removing")
 		} else {
 
-			if (data.author === req.session.name){
-
-				 data.remove(function(err) {
-					if (err){
-						errorHandler(err,req,res);
-					}
-					console.log('A twotte was deleted');
-					res.end();
-				})
-			}
+			 data.remove(function(err) {
+				if (err){
+					errorHandler(err,req,res);
+				}
+				console.log('A twotte was deleted');
+				res.end();
+			})
 		}
-		
 	});
+}
+
+routes.logout = function (req, res){
+	req.logout();
+	res.redirect('/');
 }
 
 module.exports = routes;

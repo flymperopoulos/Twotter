@@ -3,7 +3,9 @@ var mongoose = require('mongoose');
 
 // Creates new Schema out of mongoose
 var personSchema = mongoose.Schema({
-	name : String
+	oauthID : Number,
+	name : String,
+	created: String
 });
 
 // Definition of the model in the models file

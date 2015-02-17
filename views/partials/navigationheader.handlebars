@@ -1,15 +1,5 @@
-{{#if loggedIn}}
-	<nav class="navbar navbar-default">
-		<form action='/logout' id='logout' name="{{name}}" class='navbar-form navbar-right'>
-				You're logged in as, {{name}}
-				<button type='submit' class='btn btn-submit btn-raised form-control'>Log Out</button>
-		</form>
-	</nav>
-{{else}}
-	<nav class="navbar navbar-default">
-		<form action='/login' id='login' class='navbar-form navbar-right'>
-				<input type='text' id="nameField" name='username' placeholder='Enter Username' class='form-control' required='true'>
-				<button type='submit' class='btn btn-submit btn-raised form-control'>Log In</button>
-		</form>
-	</nav>
-{{/if}}
+<nav class="navbar navbar-default">
+	<form action='/auth/facebook' method="GET" id='login' class='navbar-form navbar-right'>
+			<button type='submit' class='btn btn-submit btn-raised form-control'>Sign In</button>
+	</form>
+</nav>
