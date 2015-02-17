@@ -7,6 +7,7 @@ var $newtwotteForm = $('.newForm');
 var $newStatusForm = $('.logStatus');
 var $trashIcon = $('.trashIcon');
 var $buttonDelete = $('.img-trash-icon');
+var $authorSelect = $('.authorName');
 
 // handles the error case for all .error functions in this file
 var onError = function(data, status) {
@@ -145,8 +146,25 @@ function deleteHandler(event){
 	$.post('/deleteTwotte', {'idToDelete':twotteID})
 }
 
+function selectAndHighlight(){
+	var author = $(this).html().trim();
+	$('.'+author).toggleClass('clicked');
+	
+	// var authorOfTwotte = $('#author').html();
+	
+	// console.log(author);
+	// console.log(authorOfTwotte);
+	// debugger;
+
+	// if (authorOfTwotte === author) {
+	// 	$('#author').parent().toggleClass('clicked');
+	// 	debugger;
+	// }
+}
+
 $logInForm.submit(loginHandler);
 $("#addTwotte").submit(postTwotteHandler);
 $logOutForm.submit(logoutHandler);
 $('.toggleTwotte').click(onClickDiv);
 $buttonDelete.submit(deleteHandler);
+$('.authorName').click(selectAndHighlight);
