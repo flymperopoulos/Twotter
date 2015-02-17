@@ -5,6 +5,8 @@ var $addTwotte = $("#addTwotte");				 // form that adds tweet
 var $listOfTwottes = $("#listOfTwottes");
 var $newtwotteForm = $('.newForm');
 var $newStatusForm = $('.logStatus');
+var $trashIcon = $('.trashIcon');
+var $buttonDelete = $('.img-trash-icon');
 
 // handles the error case for all .error functions in this file
 var onError = function(data, status) {
@@ -12,12 +14,33 @@ var onError = function(data, status) {
   console.log("error", data);
 };
 
+function onClickDiv(){
+	var sessionUser = $(this).parent().parent().children().children().first().children().attr('name');
+	var currentTwotteAuthor = $(this).children().html();
+	$trashButton = $(this).children('img');
+
+	console.log(currentTwotteAuthor);
+	console.log(sessionUser);
+
+	if (sessionUser === currentTwotteAuthor) {
+		$trashButton.toggle();
+
+		$('.img-trash-icon').click(deleteHandler);
+	}
+}
+
 var onSuccessLogIn = function (data, status){
+
+	console.log('data when login', data);
+	var flag = false;
+	debugger;
+	// put a delete button to all twottes with this data.name class
+
 	// render the fron-end form
 	var resultTwotteForm = "<form id='addTwotte' action='/addTwotte' class='form-horizontal'><div class='panel-footer message' name='message' id ='authorOfTwotteWelcome'>Welcome " + data.name + "</div><textarea placeholder='Your Twoot Here' id='messageInput' class='form-control' required='true'></textarea><button type='submit' id='buttonBoom' class='btn btn-success btn-raised form-control'>Submit</button></form>";
 
 	// render the front-end log nav bar
-	var resultLogStatus = "<nav class='navbar navbar-default'><form action='/logout' id='logout' class='navbar-form navbar-right'>"+"<center>You're awesome, " + data.name + "</center><button type='submit' class='btn btn-submit btn-raised form-control'>Log Out</button></form></nav>";
+	var resultLogStatus = "<nav class='navbar navbar-default'><form action='/logout' name="+data.name + " id='logout' class='navbar-form navbar-right'><center>You're awesome, " + data.name + "</center><button type='submit' class='btn btn-submit btn-raised form-control'>Log Out</button></form></nav>";
 
 	// append new form to the div for twotte submission
 	$newtwotteForm.append(resultTwotteForm);
@@ -30,6 +53,17 @@ var onSuccessLogIn = function (data, status){
 
 	// call handler on new nav bar
 	$('#logout').submit(logoutHandler);
+
+	$.each($(".authorName"), function(index, value){
+	  		debugger;
+	  		if (value.innerText === data.name){
+	  			flag = true;
+	  		}
+		});
+	      	if(!flag){
+	      		$(".authorsList").prepend('<center>' + data.name + '</center>');
+	}
+
 }
 
 var onSuccessLogOut = function (data, status){
@@ -44,26 +78,20 @@ var onSuccessLogOut = function (data, status){
 }
 
 var onSuccessTwotte = function (data, status){
+	var resultTwotte;
+	console.log(data);
 
-	// cloning the top div item
-	var divTwotte = $listOfTwottes.children().first().clone();
-	
-	// updating class and id of div
-	var updatingStuff = divTwotte.attr('id', data._id).attr('class',data.author);
-	// updates name
-	document.getElementById('author').innerHTML = data.author;
-	// updates timestamp
-	document.getElementById('time').innerHTML = data.timestamp;
-	// updates message
-	document.getElementById('message').innerHTML = data.message;
+	resultTwotte = 	"<div class='" + data.author +" toggleTwotte' id=" + data._id + "><span id='author'>" + data.author + "</span> @ <span id='time'>" + data.timestamp + "</span>Message: <span id='message'>"+ data.message + "</span><img src='../images/trashIcon.png' width='30' height='30' class='img-trash-icon' hidden>";
 
-	$listOfTwottes.prepend(updatingStuff);
+	$listOfTwottes.prepend(resultTwotte);
+	debugger;
 
-	$('.authorsList').prepend('<center>' + data.author + '</center>');
+	// $('.authorsList').prepend('<center>' + data.author + '</center>');
+
+	$('.toggleTwotte').click(onClickDiv);
 
 	// var twoot_form = Handlebars.templates['newtwotte'];
 	// $('#listOfTwottes').prepend(twoot_form(data));
-	console.log(data);
 }
 
 // loginHandler function
@@ -96,12 +124,10 @@ function postTwotteHandler(event) {
 	console.log('Submitting twotte...');
 	event.preventDefault();
 
-	var name = $("#login").find("#nameField").val();
 	var message = $("#addTwotte").find("#messageInput").val();
 	var urlRequest = $("#addTwotte").attr('action');
 	
 	var twotteData = {
-		name:name,
 		message:message
 	}
 
@@ -110,6 +136,17 @@ function postTwotteHandler(event) {
 		.error(onError);
 }
 
+function deleteHandler(event){
+	event.preventDefault();
+	var twotteID = $(this).parent().attr('id');
+	debugger;
+	
+	$('#'+twotteID).remove();
+	$.post('/deleteTwotte', {'idToDelete':twotteID})
+}
+
 $logInForm.submit(loginHandler);
-$addTwotte.submit(postTwotteHandler);
+$("#addTwotte").submit(postTwotteHandler);
 $logOutForm.submit(logoutHandler);
+$('.toggleTwotte').click(onClickDiv);
+$buttonDelete.submit(deleteHandler);

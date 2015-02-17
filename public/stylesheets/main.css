@@ -24,7 +24,7 @@
 	color: #ff4c4c;
 }
 
-#authorName{
+.authorName{
 	text-align: center;
 	cursor: pointer;
 }

@@ -62,8 +62,8 @@ routes.login = function(req, res){
 
 	var newPerson = new Person({'name':req.body.name});
 
-	Person.count({name:newPerson.name},function (err,count){
-		if (!count) {
+	Person.find({name:newPerson.name},null, {sort:{timestamp:-1}}, function (err,data){
+		if (data.length === 0) {
 			// save to the database
 			newPerson.save(function (err, user){
 				if (err) {
@@ -96,8 +96,18 @@ routes.login = function(req, res){
 			});
 		} else {
 
-			// THIS NAME ALREADY EXISTS
-			res.end();
+			req.session._id	= data[0]._id;
+			req.session.name = data[0].name;
+
+			var ResSessObj = {
+				'_id' : req.session._id,
+				'name' : req.session.name,
+				loggedIn: true
+			}
+
+			console.log('resulting person obj',ResSessObj);
+
+			res.json(ResSessObj);
 		}
 	})
 }
@@ -111,10 +121,9 @@ routes.logout = function (req, res){
 
 
 routes.postTwotte = function (req, res){
+
 	var author = req.session.name;
-
 	var message = req.body.message;
-
 	var displayTime = getTimeStamp();
 
 	var newTwotte = new Twotte({
@@ -130,6 +139,31 @@ routes.postTwotte = function (req, res){
 			res.json(twotte);
 		}
 	})
+}
+
+routes.deleteTwotte = function (req, res) {
+	var twotteIdToRemove = req.body.idToDelete;
+
+	console.log('idToRemove',twotteIdToRemove);
+
+	Twotte.findOne({'_id':twotteIdToRemove}, function (err,data){	
+		if (err){
+			console.log("error with removing")
+		} else {
+
+			if (data.author === req.session.name){
+
+				 data.remove(function(err) {
+					if (err){
+						errorHandler(err,req,res);
+					}
+					console.log('A twotte was deleted');
+					res.end();
+				})
+			}
+		}
+		
+	});
 }
 
 module.exports = routes;

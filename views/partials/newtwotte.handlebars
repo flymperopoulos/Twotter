@@ -2,10 +2,11 @@
 
 {{#each twottes}}
 
-	<div class="{{this.author}}" id="{{this._id}}">
-		<span id="author"> {{this.author}} </span> @ <span id="time">{{this.timestamp}}</span>
+	<div class="{{this.author}} toggleTwotte" id="{{this._id}}">
+		<span id="author">{{this.author}}</span> @ <span id="time">{{this.timestamp}}</span>
 		Message: <span id="message">{{this.message}}</span>
-	</div>
+		<img src="../images/trashIcon.png" width="30" height="30" class="img-trash-icon" hidden>
+ 	</div>
 
 {{/each}}
 
