@@ -1,27 +1,21 @@
 .heading-title-banner {
-	font-size:250%;
+	font-size:200%;
 	font-family: 'Myriad Set Pro', 'Lucida Grande', 'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
 	font-weight: 200;
+	float:left;
 	color: rgb(51, 51, 51);
 	letter-spacing: -0.959999978542328px;
 	-webkit-font-smoothing: antialiased;
 }
 
+#authorOfTwotteWelcome {
+	text-align: center;
+}
+
 #listOfTwottes {
-	text-align: center;
-}
-
-#welcomeTitle {
-	text-align: center;
-}
-
-#authorOfTwotteWelcome{
-	text-align: center;
-}
-
-#author{
-	font-weight: bold;
-	color: #ff4c4c;
+	width:80%;
+	float:left;
+	padding:10px;
 }
 
 .authorName{
@@ -29,12 +23,24 @@
 	cursor: pointer;
 }
 
-.authors {
-	text-align: center;
+.authorsList {
+    line-height:30px;
+    background-color:#eeeeee;
+    height:100%;
+    width:20%;
+    float:right;
+    padding:0px;	      
 }
 
 .clicked {
   background-color: yellow;
+}
+
+/* Twotte Display */
+
+#author{
+	font-weight: bold;
+	color: #ff4c4c;
 }
 
 #message {

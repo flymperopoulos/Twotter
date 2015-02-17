@@ -38,10 +38,10 @@ var onSuccessLogIn = function (data, status){
 	// put a delete button to all twottes with this data.name class
 
 	// render the fron-end form
-	var resultTwotteForm = "<form id='addTwotte' action='/addTwotte' class='form-horizontal'><div class='panel-footer message' name='message' id ='authorOfTwotteWelcome'>Welcome " + data.name + "</div><textarea placeholder='Your Twoot Here' id='messageInput' class='form-control' required='true'></textarea><button type='submit' id='buttonBoom' class='btn btn-success btn-raised form-control'>Submit</button></form>";
+	var resultTwotteForm = "<form id='addTwotte' action='/addTwotte' class='form-horizontal'><div class='panel-footer message' name='message' id ='authorOfTwotteWelcome'>Welcome, " + data.name + "!</div><textarea placeholder='Your Twoot Here' id='messageInput' class='form-control' required='true'></textarea><button type='submit' id='buttonBoom' class='btn btn-success btn-raised form-control'>Submit</button></form>";
 
 	// render the front-end log nav bar
-	var resultLogStatus = "<nav class='navbar navbar-default'><form action='/logout' name="+data.name + " id='logout' class='navbar-form navbar-right'><center>You're awesome, " + data.name + "</center><button type='submit' class='btn btn-submit btn-raised form-control'>Log Out</button></form></nav>";
+	var resultLogStatus = "<nav class='navbar navbar-default'><form action='/logout' name="+data.name + " id='logout' class='navbar-form navbar-right'>You're logged in as, " + data.name + "<button type='submit' class='btn btn-submit btn-raised form-control'>Log Out</button></form></nav>";
 
 	// append new form to the div for twotte submission
 	$newtwotteForm.append(resultTwotteForm);
@@ -56,7 +56,6 @@ var onSuccessLogIn = function (data, status){
 	$('#logout').submit(logoutHandler);
 
 	$.each($(".authorName"), function(index, value){
-	  		debugger;
 	  		if (value.innerText === data.name){
 	  			flag = true;
 	  		}
@@ -86,8 +85,6 @@ var onSuccessTwotte = function (data, status){
 
 	$listOfTwottes.prepend(resultTwotte);
 	debugger;
-
-	// $('.authorsList').prepend('<center>' + data.author + '</center>');
 
 	$('.toggleTwotte').click(onClickDiv);
 
@@ -140,8 +137,7 @@ function postTwotteHandler(event) {
 function deleteHandler(event){
 	event.preventDefault();
 	var twotteID = $(this).parent().attr('id');
-	debugger;
-	
+
 	$('#'+twotteID).remove();
 	$.post('/deleteTwotte', {'idToDelete':twotteID})
 }
@@ -149,17 +145,6 @@ function deleteHandler(event){
 function selectAndHighlight(){
 	var author = $(this).html().trim();
 	$('.'+author).toggleClass('clicked');
-	
-	// var authorOfTwotte = $('#author').html();
-	
-	// console.log(author);
-	// console.log(authorOfTwotte);
-	// debugger;
-
-	// if (authorOfTwotte === author) {
-	// 	$('#author').parent().toggleClass('clicked');
-	// 	debugger;
-	// }
 }
 
 $logInForm.submit(loginHandler);
