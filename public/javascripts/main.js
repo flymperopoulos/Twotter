@@ -61,8 +61,10 @@ var onSuccessLogIn = function (data, status){
 	  		}
 		});
 	      	if(!flag){
-	      		$(".authorsList").prepend('<center>' + data.name + '</center>');
+	      		$(".authorsList").prepend('<div class="'+data.name+ ' authorName" id="'+data._id+ '">'+data.name+'</div>');
 	}
+	$('.authorName').unbind();
+	$('.authorName').click(selectAndHighlight);
 
 }
 
@@ -81,7 +83,7 @@ var onSuccessTwotte = function (data, status){
 	var resultTwotte;
 	console.log(data);
 
-	resultTwotte = 	"<div class='" + data.author +" toggleTwotte' id=" + data._id + "><span id='author'>" + data.author + "</span> @ <span id='time'>" + data.timestamp + "</span>Message: <span id='message'>"+ data.message + "</span><img src='../images/trashIcon.png' width='30' height='30' class='img-trash-icon' hidden>";
+	resultTwotte = 	"<div class='" + data.author +" toggleTwotte' id=" + data._id + "><span id='author'>" + data.author + "</span> @ <span id='time'>" + data.timestamp + "</span>: <span id='message'>"+ data.message + "</span><img src='../images/trashIcon.png' width='30' height='30' class='img-trash-icon' hidden>";
 
 	$listOfTwottes.prepend(resultTwotte);
 	debugger;
