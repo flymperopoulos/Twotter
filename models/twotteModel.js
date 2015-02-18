@@ -6,7 +6,8 @@ var twotteSchema = mongoose.Schema({
 	timestamp : String,
 	oauthId : String,
 	author: String,
-	message: String
+	message: String,
+	displayName: String
 });
 
 // Definition of the model in the models file

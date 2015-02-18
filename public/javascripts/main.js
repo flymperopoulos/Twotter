@@ -16,6 +16,7 @@ function onClickDiv(){
 	var currentTwotteAuthor = $(this).children().html();
 	$trashButton = $(this).children('img');
 
+	debugger;
 	if (sessionUser === currentTwotteAuthor) {
 		$trashButton.toggle();
 
@@ -34,7 +35,7 @@ var onSuccessTwotte = function (data, status){
 	var resultTwotte;
 	console.log(data);
 
-	resultTwotte = 	"<div class='" + data.author +" toggleTwotte' id=" + data._id + "><span id='author'>" + data.author + "</span> @ <span id='time'><i>(" +data.timestamp+")</i></span>: <span id='message'>"+ data.message + "</span><img src='../images/trashIcon.png' width='30' height='30' class='img-trash-icon' hidden>";
+	resultTwotte = 	"<div class='" + data.displayName +" toggleTwotte' id=" + data._id + " name='"+data.author+ "'><span id='author'>" + data.author + "</span> @ <span id='time'><i>(" +data.timestamp+")</i></span>: <span id='message'>"+ data.message + "</span><img src='../images/trashIcon.png' width='30' height='30' class='img-trash-icon' hidden>";
 
 	$listOfTwottes.prepend(resultTwotte);
 
@@ -51,6 +52,7 @@ function postTwotteHandler(event) {
 	
 	console.log(urlRequest);
 	debugger;
+
 	var twotteData = {
 		message:message
 	}
@@ -65,8 +67,12 @@ function selectAndHighlight(){
 	var authorInList = $(this).html().trim();
 	var authorInTwotte = $('#author').parent().attr('name');
 
+	debugger;
 	if (authorInList === authorInTwotte){
-		$(author).toggleClass('clicked');
+		var displayNameDiv = authorInList.replace(/ /g,"_");
+
+		$('.'+displayNameDiv).toggleClass('clicked');
+		debugger;
 	}
 }
 

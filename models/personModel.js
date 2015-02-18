@@ -5,7 +5,8 @@ var mongoose = require('mongoose');
 var personSchema = mongoose.Schema({
 	oauthID : Number,
 	name : String,
-	created: String
+	created: String,
+	displayName:String
 });
 
 // Definition of the model in the models file

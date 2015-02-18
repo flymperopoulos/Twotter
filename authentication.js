@@ -22,16 +22,18 @@ function(accessToken, refreshToken, profile, done) {
 
 				var getTimeStamp = function (){
 					var timeCurrent = new Date();
-					var timeStap =  timeCurrent.getHours() + ":" + timeCurrent.getMinutes() + ":" + timeCurrent.getSeconds();
+					var timeStap =  timeCurrent.getDate() + '/' + timeCurrent.getMonth() + '/' + timeCurrent.getFullYear() + '@' + timeCurrent.getHours() + ":" + timeCurrent.getMinutes() + ":" + timeCurrent.getSeconds();
 					return timeStap;
 				}
 				var displayTime = getTimeStamp();
+				var displayWithUnder = profile.displayName.replace(/ /g,"_");
 
 
 			  var user = new Person({
 			    oauthID: profile.id,
 			    name: profile.displayName,
-			    created: displayTime
+			    created: displayTime,
+			    displayName: displayWithUnder
 			  });
 
 			  user.save(function(err) {

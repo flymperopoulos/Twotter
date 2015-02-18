@@ -57,13 +57,15 @@ routes.account = function(req, res){
  					errorHandler(err, req, res);
  				} 
 
+ 				displayName = user.name.replace(/ /g,"_");
+ 				console.log('displayName: ', displayName);
+
  				var CompletePageData = {
  					people : user,
  					twottes : twottesNew,
- 					name:user.name
+ 					name:user.name,
+ 					displayName:displayName
  				}
-
- 				console.log(CompletePageData);
 
    			res.render('account', CompletePageData);
    			})
@@ -85,7 +87,8 @@ routes.postTwotte = function (req, res){
 			var newTwotte = new Twotte({
 				author:passportAuthor, 
 				message:message,
-				timestamp: displayTime
+				timestamp: displayTime,
+				displayName : user.name.replace(/ /g,"_")
 			});
 
 			// console.log('new twotte',newTwotte);
@@ -95,9 +98,9 @@ routes.postTwotte = function (req, res){
 					console.log(err);
 					errorHandler(err, req, res);
 				} else {
-					console.log(twotte);
+					console.log('chris wants twotte: ',twotte);
 
-					res.render('account', twotte);
+					res.json(twotte);
 				}
 			})
 
