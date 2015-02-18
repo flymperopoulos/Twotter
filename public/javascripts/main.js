@@ -34,8 +34,6 @@ var onSuccessLogIn = function (data, status){
 
 	console.log('data when login', data);
 	var flag = false;
-	debugger;
-	// put a delete button to all twottes with this data.name class
 
 	// render the fron-end form
 	var resultTwotteForm = "<form id='addTwotte' action='/addTwotte' class='form-horizontal'><div class='panel-footer message' name='message' id ='authorOfTwotteWelcome'>Welcome, " + data.name + "!</div><textarea placeholder='Your Twoot Here' id='messageInput' class='form-control' required='true'></textarea><button type='submit' id='buttonBoom' class='btn btn-success btn-raised form-control'>Submit</button></form>";
@@ -86,7 +84,6 @@ var onSuccessTwotte = function (data, status){
 	resultTwotte = 	"<div class='" + data.author +" toggleTwotte' id=" + data._id + "><span id='author'>" + data.author + "</span> @ <span id='time'>" + data.timestamp + "</span>: <span id='message'>"+ data.message + "</span><img src='../images/trashIcon.png' width='30' height='30' class='img-trash-icon' hidden>";
 
 	$listOfTwottes.prepend(resultTwotte);
-	debugger;
 
 	$('.toggleTwotte').click(onClickDiv);
 
