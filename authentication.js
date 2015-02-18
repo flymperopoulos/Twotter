@@ -28,6 +28,7 @@ function(accessToken, refreshToken, profile, done) {
 				var displayTime = getTimeStamp();
 				var displayWithUnder = profile.displayName.replace(/ /g,"_");
 
+				console.log('HAHAH: ', displayWithUnder)
 
 			  var user = new Person({
 			    oauthID: profile.id,
