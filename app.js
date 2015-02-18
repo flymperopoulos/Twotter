@@ -1,3 +1,4 @@
+// requirements
 var express = require('express');
 var session = require('express-session');
 var path = require('path');
@@ -14,12 +15,13 @@ var ensureAuthenticated = require('./routes/ensureAuthenticated.js');
 
 var index = require('./routes/index');
 
-// serialize and deserialize
+// serialize passport
 passport.serializeUser(function(user, done) {
 	console.log('serializeUser: ' + user._id)
 	done(null, user._id);
 });
 
+// deserialize passport
 passport.deserializeUser(function(id, done) {
  Person.findById(id, function(err, user){
      console.log(user)
@@ -28,6 +30,7 @@ passport.deserializeUser(function(id, done) {
  })
 });
 
+// defines mongoURI and connects to it, depending on connection
 var mongoURI = process.env.MONGOURI || "mongodb://localhost/test";
 mongoose.connect(mongoURI);
 

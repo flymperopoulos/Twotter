@@ -9,6 +9,7 @@ function errorHandler(err, req, res, next) {
   res.render('error', { error: err });
 }
 
+// method that records current time
 var getTimeStamp = function (){
 	var timeCurrent = new Date();
 	var timeStap =  timeCurrent.getHours() + ":" + timeCurrent.getMinutes() + ":" + timeCurrent.getSeconds();
@@ -20,22 +21,23 @@ var routes = {};
 
 // Home method renders home.handlebars
 routes.home = function(req, res) {
-	console.log('entered routes.home')
+
+	// looks through the whole list of Person objects 
 	Person.find({}, function (err, peopleNew){
 		if (err) {
 			errorHandler(err, req, res);
 		} else {
+			// searches through all twottes and sorts based on time (reverse - newest one on top)
 			Twotte.find({}, null, {sort:{timestamp:-1}}, function (err, twottesNew){
 				if (err) {
 					errorHandler(err, req, res);
 				} 
 
+				// data of twottes and people
 				var CompletePageData = {
 					people : peopleNew,
 					twottes : twottesNew
 				}
-
-				console.log('prints CompletePageData: ', CompletePageData);
 
 				res.render('home', CompletePageData);
 			})
@@ -43,15 +45,16 @@ routes.home = function(req, res) {
 	})
 }
 
+// called after authenticated from GET request at '/account'
 routes.account = function(req, res){
-	console.log('got in routes.account');
 
+	// looks by id in the passport session for the user that got authenticated 
 	Person.findById(req.session.passport.user, function(err, user) {
  		if(err) {
-  			res.status(500).send({'error':err});
-  			console.log(err);
+ 			errorHandler(err, req, res);
  		} else {
 
+ 			// looks for all twottes and sorts by reverse time
  			Twotte.find({}, null, {sort:{timestamp:-1}}, function (err, twottesNew){
  				if (err) {
  					errorHandler(err, req, res);
@@ -61,9 +64,10 @@ routes.account = function(req, res){
  						errorHandler(err, req, res);
  					} 				
 
-	 				displayName = user.name.replace(/ /g,"_");
-	 				console.log('displayName: ', displayName);
+ 					// replacing ' ' with '_' for better class reference of unique authenticated person name
+	 				var displayName = user.name.replace(/ /g,"_");
 
+	 				// data that will render account.handlebars
 	 				var CompletePageData = {
 	 					people : peopleNew,
 	 					twottes : twottesNew,
@@ -78,17 +82,22 @@ routes.account = function(req, res){
 	});
 }
 
+// called when a twotte is submitted
 routes.postTwotte = function (req, res){
+
+	// looks database based on ID
 	Person.findById(req.session.passport.user, function(err, user) {
  		if(err) {
   			console.log(err);
  		} else {
 
+ 			// declares the passport object and gets name and message from request
  			var passportObj = req.session.passport;
 			var passportAuthor = user.name;
 			var message = req.body.message;
 			var displayTime = getTimeStamp();
 
+			// creates new twotte 
 			var newTwotte = new Twotte({
 				author:passportAuthor, 
 				message:message,
@@ -96,15 +105,13 @@ routes.postTwotte = function (req, res){
 				displayName : user.name.replace(/ /g,"_")
 			});
 
-			// console.log('new twotte',newTwotte);
+			// saves this new twotte
 			newTwotte.save(function (err, twotte){
 				if (err) {
-					res.status(500).send({'error':err});
-					console.log(err);
 					errorHandler(err, req, res);
 				} else {
-					console.log('chris wants twotte: ',twotte);
 
+					// sends twotte as json
 					res.json(twotte);
 				}
 			})
@@ -113,27 +120,30 @@ routes.postTwotte = function (req, res){
 	});
 }
 
+// method when deleting twotte
 routes.deleteTwotte = function (req, res) {
+
+	// gets the id to be removed from the request
 	var twotteIdToRemove = req.body.idToDelete;
 
-	console.log('idToRemove',twotteIdToRemove);
-
+	// finds this twotte with the unique ID from the Twottes array of objects
 	Twotte.findOne({'_id':twotteIdToRemove}, function (err,data){	
 		if (err){
 			console.log("error with removing")
 		} else {
 
+			// removes from database
 			 data.remove(function(err) {
 				if (err){
 					errorHandler(err,req,res);
 				}
-				console.log('A twotte was deleted');
 				res.end();
 			})
 		}
 	});
 }
 
+// logout method
 routes.logout = function (req, res){
 	req.logout();
 	res.redirect('/');
