@@ -16,6 +16,7 @@
 	width:80%;
 	float:left;
 	padding:10px;
+	cursor: pointer;
 }
 
 .authorName{
@@ -38,9 +39,17 @@
 
 /* Twotte Display */
 
+.img-trash-icon{
+	cursor: pointer;
+}
+
 #author{
 	font-weight: bold;
 	color: #ff4c4c;
+}
+
+#time {
+	font-style: italic;
 }
 
 #message {

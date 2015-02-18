@@ -25,7 +25,6 @@ function onClickDiv(){
 
 	if (sessionUser === currentTwotteAuthor) {
 		$trashButton.toggle();
-
 		$('.img-trash-icon').click(deleteHandler);
 	}
 }
