@@ -1,0 +1,12 @@
+<div id="listOfTwottes">
+
+{{#each twottes}}
+
+	<div class="{{this.author}} toggleTwotte" id="{{this._id}}">
+		<span id="author">{{this.author}}</span> @ <span id="time">{{this.timestamp}}</span>: <span id="message">{{this.message}}</span>
+		<img src="../images/trashIcon.png" width="20" height="20" class="img-trash-icon" hidden>
+ 	</div>
+
+{{/each}}
+
+</div>
