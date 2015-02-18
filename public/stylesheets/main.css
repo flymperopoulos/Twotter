@@ -16,6 +16,7 @@
 	width:80%;
 	float:left;
 	padding:10px;
+	cursor: pointer;
 }
 
 .authorName{
@@ -33,17 +34,21 @@
 }
 
 .clicked {
-  background-color: yellow;
+	width: 100%;
+	height: 100%;
+	background-color: #e5e5ff;
+	margin-bottom: 10px;
+	box-shadow: 10px 10px 5px #888888;
 }
 
 /* Twotte Display */
 
-#author{
+.author{
 	font-weight: bold;
 	color: #ff4c4c;
 }
 
-#message {
+.message {
 	font-weight: bold;
 	color:#ff9999;
 }

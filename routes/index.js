@@ -56,18 +56,23 @@ routes.account = function(req, res){
  				if (err) {
  					errorHandler(err, req, res);
  				} 
+ 				Person.find({}, function(err, peopleNew){
+ 					if (err){
+ 						errorHandler(err, req, res);
+ 					} 				
 
- 				displayName = user.name.replace(/ /g,"_");
- 				console.log('displayName: ', displayName);
+	 				displayName = user.name.replace(/ /g,"_");
+	 				console.log('displayName: ', displayName);
 
- 				var CompletePageData = {
- 					people : user,
- 					twottes : twottesNew,
- 					name:user.name,
- 					displayName:displayName
- 				}
+	 				var CompletePageData = {
+	 					people : peopleNew,
+	 					twottes : twottesNew,
+	 					name:user.name,
+	 					displayName:displayName
+	 				}
 
-   			res.render('account', CompletePageData);
+	   				res.render('account', CompletePageData);
+   				})
    			})
  		}
 	});

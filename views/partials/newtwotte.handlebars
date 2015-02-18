@@ -3,7 +3,7 @@
 {{#each twottes}}
 
 	<div class="{{displayName}} toggleTwotte" id="{{_id}}" name ="{{author}}">
-		<span id="author">{{author}}</span> @ <span id="time"> <i>({{timestamp}})</i>: </span><span id="message"> {{message}}</span>
+		<span class="author {{author}}">{{author}}</span> @ <span class="time {{timestamp}}"> <i>({{timestamp}})</i>: </span><span class="message {{message}}"> {{message}}</span>
 		<img src="../images/trashIcon.png" width="30" height="30" class="img-trash-icon" hidden>
  	</div>
 

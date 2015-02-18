@@ -16,7 +16,6 @@ function onClickDiv(){
 	var currentTwotteAuthor = $(this).children().html();
 	$trashButton = $(this).children('img');
 
-	debugger;
 	if (sessionUser === currentTwotteAuthor) {
 		$trashButton.toggle();
 
@@ -27,6 +26,7 @@ function onClickDiv(){
 function deleteHandler(event){
 	event.preventDefault();
 	var twotteID = $(this).parent().attr('id');
+
 	$('#'+twotteID).remove();
 	$.post('/deleteTwotte', {'idToDelete':twotteID})
 }
@@ -65,15 +65,9 @@ function postTwotteHandler(event) {
 // highlight author's twottes
 function selectAndHighlight(){
 	var authorInList = $(this).html().trim();
-	var authorInTwotte = $('#author').parent().attr('name');
 
-	debugger;
-	if (authorInList === authorInTwotte){
-		var displayNameDiv = authorInList.replace(/ /g,"_");
-
-		$('.'+displayNameDiv).toggleClass('clicked');
-		debugger;
-	}
+	var displayNameDiv = authorInList.replace(/ /g,"_");
+	$('.'+displayNameDiv).toggleClass('clicked');
 }
 
 $("#addTwotte").submit(postTwotteHandler);
