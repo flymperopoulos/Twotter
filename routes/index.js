@@ -95,11 +95,12 @@ routes.postTwotte = function (req, res){
 					console.log(err);
 					errorHandler(err, req, res);
 				} else {
-					res.json(twotte);
+					console.log(twotte);
+
+					res.render('account', twotte);
 				}
 			})
 
-   			res.render('account', newTwotte);
  		}
 	});
 }
