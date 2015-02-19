@@ -8,7 +8,6 @@ var cookieParser = require('cookie-parser');
 var exphbs  = require('express-handlebars');
 var mongoose = require('mongoose');
 var passport = require('passport')
-// var config = require('./oauth.js');
 var auth = require('./authentication.js');
 var Person = require(path.join(__dirname,'./models/personModel'));
 var ensureAuthenticated = require('./routes/ensureAuthenticated.js');

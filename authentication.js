@@ -3,7 +3,6 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 var config = require('./oauth.js')
 var path = require('path');
 var Person = require(path.join(__dirname,'./models/personModel'));
-var config = require('./oauth.js')
 
 // config
 module.exports = passport.use(new FacebookStrategy({
